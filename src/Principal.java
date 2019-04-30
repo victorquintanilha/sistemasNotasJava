@@ -141,6 +141,11 @@ public class Principal {
 
 	
 
+	private static void emitirNotas() {
+		
+		
+	}
+
 	private static void menuRelatorios() {
 
 		String[] opcoes = { "Por Empresas", "Por Valor", "Notas Canceladas" };
@@ -171,7 +176,7 @@ public class Principal {
 	}
 
 	
-	private static NotaFiscal emitirNotas() {
+	private static NotaFiscal criarNota() {
 		
 		 String descricao = Console.recuperaTexto("Informe o motivo da nota: ");
 		 Double valor = Console.recuperaDecimal("Informe o Valor da nota: ");
