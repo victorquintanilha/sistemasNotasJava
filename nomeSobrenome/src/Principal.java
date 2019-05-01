@@ -37,7 +37,7 @@ public class Principal {
 				break;
 
 			case 3:
-
+				menuRelatorios();
 				break;
 
 			case -1:
@@ -84,7 +84,9 @@ public class Principal {
 
 				buscaCNPJ = Console.recuperaTexto("Informe o CNPJ: ");
 				index = consultarEmpresa(buscaCNPJ);
-
+				
+				
+				
 				if (index >= 0) {
 					System.out.println();
 					String confirmacao = Console.recuperaTexto("Deseja excluir essa empresa? Sim(S) Não(N): ");
@@ -126,7 +128,7 @@ public class Principal {
 				break;
 
 			case 3:
-
+				cancelarNotas();
 				break;
 			case -1:
 				System.out.println("Voltando ao Menu Principal...");
@@ -141,11 +143,45 @@ public class Principal {
 	/**
 	 * 
 	 */
+	private static void cancelarNotas() {
+		
+		String cnpj = Console.recuperaTexto("Informe o CNPJ da empresa: ");
+		int index = consultarEmpresa(cnpj);
+		Empresa empresaSolicitada = empresas.get(index);
+		
+		System.out.println(empresaSolicitada.getNotasFiscais());
+
+		String numeroNota = Console.recuperaTexto("Informe o número da nota: ");
+		String consultarNota = numeroNota;
+		ArrayList<NotaFiscal> notas = empresaSolicitada.getNotasFiscais();
+		
+		for (NotaFiscal nota : notas) {
+			if (consultarNota.equalsIgnoreCase(nota.getNumero())) {
+				nota.setCancelada(true);
+				System.out.println("Nota cancelada...");
+			}
+		}
+		
+	}
+
+	/**
+	 * 
+	 */
 	private static void consultarNotas() {
-//		String cnpj = Console.recuperaTexto("Informe o CNPJ da empresa: ");
-//		int index = consultarEmpresa(cnpj);
-//		Empresa empresaSolicitada = empresas.get(index);
-//		System.out.println(empresaSolicitada.getNotasFiscais());
+		
+		String cnpj = Console.recuperaTexto("Informe o CNPJ da empresa: ");
+		int index = consultarEmpresa(cnpj);
+		Empresa empresaSolicitada = empresas.get(index);
+		String numeroNota = Console.recuperaTexto("Informe o número da nota: ");
+		String consultarNota = numeroNota;
+		ArrayList<NotaFiscal> notas = empresaSolicitada.getNotasFiscais();
+		
+		for (NotaFiscal nota : notas) {
+			if (consultarNota.equalsIgnoreCase(nota.getNumero())) {
+				System.out.println(nota);
+			}
+		}
+		
 	}
 
 	/**
@@ -197,13 +233,14 @@ public class Principal {
 	 */
 	private static NotaFiscal criarNota() {
 
+		String numero = Console.recuperaTexto("Informe o número da nota: ");
 		String descricao = Console.recuperaTexto("Informe o motivo da nota: ");
-		Double valor = Console.recuperaDecimal("Informe o Valor da nota: ");
+		Double valor = Console.recuperaDecimal("Informe o valor da nota: ");
 		Imposto imposto = null;
 		boolean continua = true;
 			
 		do {
-			int opcao = Console.recuperaInteiroPositivo("Escolha Estado:\n1) Paraná\n2) Santa Catarina\n3) São Paulo.");
+			int opcao = Console.recuperaInteiroPositivo("Escolha o Estado:\n1) Paraná\n2) Santa Catarina\n3) São Paulo.");
 			switch (opcao) {
 
 			case 1:
@@ -226,8 +263,8 @@ public class Principal {
 			}
 		
 		} while (continua);
-				
-		NotaFiscal nota = new NotaFiscal("", descricao, imposto, valor);
+		
+		NotaFiscal nota = new NotaFiscal(numero, descricao, imposto, valor);
 		return nota;
 	}
 
