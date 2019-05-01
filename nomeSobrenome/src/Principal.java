@@ -57,7 +57,7 @@ public class Principal {
 		String buscaCNPJ;
 		int index = 0;
 		do {
-			int opcaoMenuEmpresas = Console.mostrarMenu(opcoesMenuEmpresas, "Empresas", null);
+			int opcaoMenuEmpresas = Console.mostrarMenu(opcoesMenuEmpresas, "Empresas", "Voltar");
 
 			switch (opcaoMenuEmpresas) {
 
@@ -114,7 +114,7 @@ public class Principal {
 		String[] opcoes = { "Emitir", "Consultar", "Cancelar" };
 		boolean continua = true;
 		do {
-			int opcao = Console.mostrarMenu(opcoes, "Notas Fiscais", null);
+			int opcao = Console.mostrarMenu(opcoes, "Notas Fiscais", "Voltar");
 			switch (opcao) {
 
 			case 1:
@@ -156,7 +156,7 @@ public class Principal {
 		int index = consultarEmpresa(cnpj);
 		Empresa empresaSolicitada = empresas.get(index);
 		empresaSolicitada.addNotaFiscal(criarNota());
-		System.out.println("Nota Emitida...");
+		System.out.println("Nota Emitida...\n");
 	}
 
 	/**
@@ -167,7 +167,7 @@ public class Principal {
 		String[] opcoes = { "Por Empresas", "Por Valor", "Notas Canceladas" };
 		boolean continua = true;
 		do {
-			int opcao = Console.mostrarMenu(opcoes, "Relatórios", null);
+			int opcao = Console.mostrarMenu(opcoes, "Relatórios", "Voltar");
 			switch (opcao) {
 
 			case 1:
@@ -203,20 +203,19 @@ public class Principal {
 
 		Imposto imposto = null;
 
-		if (estado.compareToIgnoreCase("PR") == 0) {
+		if (estado.equalsIgnoreCase("PR")) {
 
 			imposto = new ImpostoParana(valor);
 
-		}
-		if (estado.compareToIgnoreCase("SC") == 0) {
+		} else if (estado.equalsIgnoreCase("SC")) {
 
 			imposto = new ImpostoSantaCatarina(valor);
 
-		}
-		if (estado.compareToIgnoreCase("SP") == 0) {
+		} else if (estado.equalsIgnoreCase("SP")) {
 
 			imposto = new ImpostoSaoPaulo(valor);
-
+		} else {
+			System.out.println("Estado não encontrado...");
 		}
 
 		NotaFiscal nota = new NotaFiscal("", descricao, imposto, valor);
