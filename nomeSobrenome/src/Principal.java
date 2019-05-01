@@ -199,27 +199,35 @@ public class Principal {
 
 		String descricao = Console.recuperaTexto("Informe o motivo da nota: ");
 		Double valor = Console.recuperaDecimal("Informe o Valor da nota: ");
-		String estado = Console.recuperaTexto("Informe o Estado (PR, SC, SP):  ");
-
 		Imposto imposto = null;
+		boolean continua = true;
+			
+		do {
+			int opcao = Console.recuperaInteiroPositivo("Escolha Estado:\n1) Paraná\n2) Santa Catarina\n3) São Paulo.");
+			switch (opcao) {
 
-		if (estado.equalsIgnoreCase("PR")) {
+			case 1:
+				imposto = new ImpostoParana(valor);
+				continua = false;
+				break;
 
-			imposto = new ImpostoParana(valor);
+			case 2:
+				imposto = new ImpostoSantaCatarina(valor);
+				continua = false;
+				break;
 
-		} else if (estado.equalsIgnoreCase("SC")) {
-
-			imposto = new ImpostoSantaCatarina(valor);
-
-		} else if (estado.equalsIgnoreCase("SP")) {
-
-			imposto = new ImpostoSaoPaulo(valor);
-		} else {
-			System.out.println("Estado não encontrado...");
-		}
-
+			case 3:
+				imposto = new ImpostoSaoPaulo(valor);
+				continua = false;
+				break;
+			default:
+				System.out.println("Número informado não corresponde a um Estado...\n");
+							
+			}
+		
+		} while (continua);
+				
 		NotaFiscal nota = new NotaFiscal("", descricao, imposto, valor);
-
 		return nota;
 	}
 
