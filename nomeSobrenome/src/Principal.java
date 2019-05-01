@@ -22,7 +22,6 @@ public class Principal {
 		/**
 		 * Menu Principal
 		 */
-
 		String[] opcoes = { "Empresas", "Notas Fiscais", "Relatórios" };
 		boolean continua = true;
 		do {
@@ -34,7 +33,7 @@ public class Principal {
 				break;
 
 			case 2:
-
+				menuNotaFiscal();
 				break;
 
 			case 3:
@@ -67,16 +66,16 @@ public class Principal {
 				break;
 
 			case 2: // Consultar
-				
+
 				buscaCNPJ = Console.recuperaTexto("Informe o CNPJ: ");
 				index = consultarEmpresa(buscaCNPJ);
-				
+
 				if (index >= 0) {
 					System.out.println(empresas.get(index));
 					System.out.println();
 
 				} else {
-					System.out.println("CNPJ não entrado...");
+					System.out.println("CNPJ não encontrado...");
 					System.out.println();
 				}
 
@@ -123,7 +122,7 @@ public class Principal {
 				break;
 
 			case 2:
-
+				consultarNotas();
 				break;
 
 			case 3:
@@ -139,13 +138,30 @@ public class Principal {
 
 	}
 
-	
-
-	private static void emitirNotas() {
-		
-		
+	/**
+	 * 
+	 */
+	private static void consultarNotas() {
+//		String cnpj = Console.recuperaTexto("Informe o CNPJ da empresa: ");
+//		int index = consultarEmpresa(cnpj);
+//		Empresa empresaSolicitada = empresas.get(index);
+//		System.out.println(empresaSolicitada.getNotasFiscais());
 	}
 
+	/**
+	 * 
+	 */
+	private static void emitirNotas() {
+		String cnpj = Console.recuperaTexto("Informe o CNPJ da empresa: ");
+		int index = consultarEmpresa(cnpj);
+		Empresa empresaSolicitada = empresas.get(index);
+		empresaSolicitada.addNotaFiscal(criarNota());
+		System.out.println("Nota Emitida...");
+	}
+
+	/**
+	 * 
+	 */
 	private static void menuRelatorios() {
 
 		String[] opcoes = { "Por Empresas", "Por Valor", "Notas Canceladas" };
@@ -175,20 +191,42 @@ public class Principal {
 
 	}
 
-	
+	/**
+	 * 
+	 * @return
+	 */
 	private static NotaFiscal criarNota() {
-		
-		 String descricao = Console.recuperaTexto("Informe o motivo da nota: ");
-		 Double valor = Console.recuperaDecimal("Informe o Valor da nota: ");
-		 String estado = Console.recuperaTexto("Informe o Estado: ");
-		 
-		 NotaFiscal nota = new NotaFiscal(null, descricao, new Date(), null, valor, null, true);
-		 						
-		return nota;		 
+
+		String descricao = Console.recuperaTexto("Informe o motivo da nota: ");
+		Double valor = Console.recuperaDecimal("Informe o Valor da nota: ");
+		String estado = Console.recuperaTexto("Informe o Estado (PR, SC, SP):  ");
+
+		Imposto imposto = null;
+
+		if (estado.compareToIgnoreCase("PR") == 0) {
+
+			imposto = new ImpostoParana(valor);
+
+		}
+		if (estado.compareToIgnoreCase("SC") == 0) {
+
+			imposto = new ImpostoSantaCatarina(valor);
+
+		}
+		if (estado.compareToIgnoreCase("SP") == 0) {
+
+			imposto = new ImpostoSaoPaulo(valor);
+
+		}
+
+		NotaFiscal nota = new NotaFiscal("", descricao, imposto, valor);
+
+		return nota;
 	}
-	
+
 	/**
 	 * Localiza uma empresa no ArrayList empresas
+	 * 
 	 * @param cnpj parametro de busca
 	 * @return um inteiro com index do ArrayList empresas
 	 */
@@ -225,5 +263,5 @@ public class Principal {
 			System.out.println("CNPJ já cadastrado...");
 		}
 	}
-	
+
 }

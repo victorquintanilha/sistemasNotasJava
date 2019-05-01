@@ -37,8 +37,8 @@ public class Empresa {
 		return notasFiscais;
 	}
 
-	public void setNotasFiscais(ArrayList<NotaFiscal> notasFiscais) {
-		this.notasFiscais = notasFiscais;
+	public void addNotaFiscal(NotaFiscal notaFiscal) {
+		this.notasFiscais.add(notaFiscal);
 	}
 	
 	public ArrayList<NotaFiscal> GetNotasFiscaisValidas(){
@@ -48,10 +48,17 @@ public class Empresa {
 		
 		return  notasFiscaisValidas;
 	}
+	public ArrayList<NotaFiscal> GetNotasFiscaisCanceladas(){
+		ArrayList notasFiscaisCanceladas = new ArrayList<>();
+		
+		
+		
+		return  notasFiscaisCanceladas;
+	}
 	
 	@Override
 	public String toString() {
-		return "Nome: " + nome + "\nCnpj: " + cnpj;
+		return "Nome: " + nome + "\nCnpj: " + cnpj + "\n" + notasFiscais ;
 	}
 	
 }

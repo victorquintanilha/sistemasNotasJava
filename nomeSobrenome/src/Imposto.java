@@ -10,14 +10,11 @@ public abstract class Imposto {
 	protected Double valor;
 
 	public Imposto(Double valor) {
-
 		this.valor = valor;
 	}
 
 	public Double calcularImpostoTotal() {
-
 		return calcularImpostoFederal() + calcularImpostoEstadual();
-
 	}
 
 	public Double calcularImpostoFederal() {

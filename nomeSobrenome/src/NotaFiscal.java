@@ -14,16 +14,14 @@ public class NotaFiscal {
 	private Double valorComImposto;
 	private boolean cancelada;
 	
-	public NotaFiscal(String numero, String descricao, Date dataEmissao, Imposto imposto, Double valor,
-			Double valorComImposto, boolean cancelada) {
-		super();
+	public NotaFiscal(String numero, String descricao, Imposto imposto, Double valor) {
 		this.numero = numero;
 		this.descricao = descricao;
-		this.dataEmissao = dataEmissao;
+		this.dataEmissao = new Date();
 		this.imposto = imposto;
 		this.valor = valor;
-		this.valorComImposto = valorComImposto;
-		this.cancelada = cancelada;
+		this.cancelada = false;
+		this.valorComImposto = this.valor + imposto.calcularImpostoTotal();
 	}
 
 	public String getNumero() {
@@ -76,9 +74,7 @@ public class NotaFiscal {
 
 	@Override
 	public String toString() {
-		return "NotaFiscal\n\nNúmero: " + numero + "\nDescricao: " + descricao + "\nData Emissão: " + dataEmissao
-				+ "\nImposto: " + imposto + "\nValor: " + valor + "\nValor com Imposto: " + valorComImposto + "\nCancelada: "
-				+ cancelada;
+		return "Nota Fiscal\n\nNúmero: " + numero + "\nDescrição: " + descricao + "\nData Emissão: " + dataEmissao + "\nValor: " + valor + "\nValor com Imposto: " + valorComImposto + "\n";
 	}
 	
 }

@@ -2,18 +2,17 @@
  * @author 1829799
  *
  */
-public abstract class ImpostoSaoPaulo extends Imposto {
+public class ImpostoSaoPaulo extends Imposto {
 
+	static Double aliquotaEstadual = 0.18;
+	
 	public ImpostoSaoPaulo(Double valor) {
 		super(valor);
-		
 	}
 
-	public Double calcularImpostoEstadual(Double valor) {
-		
-		return valor * 0.18;
-		
+	@Override
+	public Double calcularImpostoEstadual() {
+		return valor * aliquotaEstadual;
 	}
 	
-
 }

@@ -2,18 +2,17 @@
  * @author 1829799
  *
  */
-public abstract class ImpostoParana extends Imposto {
+public class ImpostoParana extends Imposto {
 
+	static Double aliquotaEstadual = 0.05;
+	
 	public ImpostoParana(Double valor) {
 		super(valor);
-		
 	}
 
-	public Double calcularImpostoEstadual(Double valor) {
-		
-		return valor * 0.05;
-		
+	@Override
+	public Double calcularImpostoEstadual() {
+		return valor * aliquotaEstadual;
 	}
-	
 
 }

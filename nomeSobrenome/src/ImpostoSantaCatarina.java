@@ -2,17 +2,17 @@
  * @author 1829799
  *
  */
-public abstract class ImpostoSantaCatarina extends Imposto {
+public class ImpostoSantaCatarina extends Imposto {
 
+	static Double aliquotaEstadual = 0.1;
+	
 	public ImpostoSantaCatarina(Double valor) {
 		super(valor);
-		
 	}
 
-	public Double calcularImpostoEstadual(Double valor) {
-		
-		return valor * 0.1;
-		
+	@Override
+	public Double calcularImpostoEstadual() {
+		return valor * aliquotaEstadual;
 	}
 
 }
