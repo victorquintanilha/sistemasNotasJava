@@ -1,8 +1,7 @@
 import java.util.ArrayList;
-import java.util.Date;
 
 /**
- * Classe principal da aplicação
+ * Classe principal da aplicação.
  * 
  * @author 1829799
  *
@@ -12,22 +11,17 @@ public class Principal {
 	static ArrayList<Empresa> empresas = new ArrayList<>();
 
 	/**
-	 * Executa o metodo da main
+	 * Executa o método da main.
 	 * 
 	 * @param args
 	 */
-
 	public static void main(String[] args) {
-
-		/**
-		 * Menu Principal
-		 */
 		String[] opcoes = { "Empresas", "Notas Fiscais", "Relatórios" };
 		boolean continua = true;
 		do {
 			int opcao = Console.mostrarMenu(opcoes, "Sistema de Notas", null);
 			switch (opcao) {
-
+			
 			case 1:
 				menuEmpresa();
 				break;
@@ -44,74 +38,79 @@ public class Principal {
 				System.out.println("Saindo do Sistema...");
 				continua = false;
 				break;
+				
 			}
-
 		} while (continua);
-
 	}
 
+	/**
+	 * Executa o menu de empresa.
+	 */
 	private static void menuEmpresa() {
 
 		String[] opcoesMenuEmpresas = { "Cadastrar", "Consultar", "Excluir" };
 		boolean continua = true;
-		int index = 0;
 		do {
 			int opcaoMenuEmpresas = Console.mostrarMenu(opcoesMenuEmpresas, "Empresas", "Voltar");
-
 			switch (opcaoMenuEmpresas) {
-
-			case 1: // Adicionar
+			
+			case 1:
 				criarEmpresa();
 				break;
 
-			case 2: // Consultar
-				try {
-				System.out.println(pegarEmpresa());
-				} catch (Exception e) {
-					System.out.println(e.getMessage());
-				}
-//				buscaCNPJ = Console.recuperaTexto("Informe o CNPJ: ");
-//				index = consultarEmpresa(buscaCNPJ);
-//
-//				if (index >= 0) {
-//					System.out.println(empresas.get(index));
-//					System.out.println();
-//
-//				} else {
-//					System.out.println("CNPJ não encontrado...");
-//					System.out.println();
-//				}
-
+			case 2:
+				consultaDeEmpresas();
 				break;
-			case 3: // Excluir
-
-				String cnpj = Console.recuperaTexto("Informe o CNPJ: ");
-				index = encontrarIndexEmpresa(cnpj);
-
-				if (index >= 0) {
-					System.out.println();
-					String confirmacao = Console.recuperaTexto("Deseja excluir essa empresa? Sim(S) Não(N): ");
-					if (confirmacao.equalsIgnoreCase("s")) {
-						empresas.remove(index);
-						System.out.println("Empresa Excluida!");
-					} else {
-						System.out.println("Exclusão cancelada...");
-						System.out.println();
-					}
-				}
-
+				
+			case 3:
+				excluirEmpresa();
 				break;
 
 			case -1:
 				System.out.println("Saindo do Sistema...");
 				continua = false;
 				break;
+				
 			}
-
 		} while (continua);
-
 	}
 
+	/**
+	 * Exclui uma empresa.
+	 */
+	private static void excluirEmpresa() {
+		String cnpj = Console.recuperaTexto("Informe o CNPJ: ");
+		int index = encontrarIndexEmpresa(cnpj);
+
+		if (index >= 0) {
+			String confirmacao = Console.recuperaTexto("Deseja excluir essa empresa? Sim(S) Não(N): ");
+			if (confirmacao.equalsIgnoreCase("s")) {
+				empresas.remove(index);
+				System.out.println("Empresa Excluida!");
+			} else {
+				System.out.println("Exclusão cancelada...");
+				System.out.println();
+			}
+		} else {
+			System.out.println("CNPJ não encontrado...");
+		}
+	}
+
+	/**
+	 * Realiza a consulta e retorno de uma empresa, para o menu de empresas.
+	 */
+	private static void consultaDeEmpresas() {
+		try {
+			String cnpj = Console.recuperaTexto("Informe o CNPJ da empresa: ");
+			System.out.println(pegarEmpresa(cnpj));
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+	}
+
+	/**
+	 * Executa o menu de notas fiscais.
+	 */
 	private static void menuNotaFiscal() {
 
 		String[] opcoes = { "Emitir", "Consultar", "Cancelar" };
@@ -136,13 +135,11 @@ public class Principal {
 				continua = false;
 				break;
 			}
-
 		} while (continua);
-
 	}
 
 	/**
-	 * 
+	 * Executa o menu de relatórios.
 	 */
 	private static void menuRelatorios() {
 
@@ -155,109 +152,109 @@ public class Principal {
 			case 1:
 				gerarRelatorioPorEmpresa();
 				break;
+				
 			case 2:
 				gerarRelatorioNotasCanceladas();
 				break;
+				
 			case 3:
 				gerarRelatorioPorValorDaNota();
 				break;
+				
 			case -1:
 				System.out.println("Voltando ao Menu Principal...");
 				continua = false;
 				break;
+				
 			}
-
 		} while (continua);
-
 	}
 
+	/**
+	 * 
+	 */
 	private static void gerarRelatorioPorValorDaNota() {
 
 	}
 
+	/**
+	 * 
+	 */
 	private static void gerarRelatorioNotasCanceladas() {
 
 	}
 
+	/**
+	 * 
+	 */
 	private static void gerarRelatorioPorEmpresa() {
-		ArrayList<NotaFiscal> notasAtivas = new ArrayList<>();
-
-		try {
-		Empresa empresa = pegarEmpresa();
-
-		for (NotaFiscal nota : empresa.getNotasFiscais()) {
-
-			if (nota.isCancelada()) {
-				notasAtivas.add(nota);
-			}
-		}
-		System.out.println(notasAtivas);
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
-		}
-	}
-
-	/**
-	 * Cancela a nota fiscal na empresa desejada
-	 */
-	private static void cancelarNotas() {
-		try {
-		String cnpj = Console.recuperaTexto("Informe o CNPJ da empresa: ");
-		int index = encontrarIndexEmpresa(cnpj);
-		Empresa empresa = pegarEmpresa();
-		System.out.println(empresas.get(index).getNotasFiscais());
-		String numeroNota = Console.recuperaTexto("Informe o número da nota: ");
-		ArrayList<NotaFiscal> notas = empresas.get(index).getNotasFiscais();
-		for (NotaFiscal nota : notas) {
-			if (numeroNota.equalsIgnoreCase(nota.getNumero())) {
-				nota.setCancelada(true);
-				System.out.println("Nota cancelada...");
-			}
-		}
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
-		}
-
-	}
-
-	/**
-	 * Consulta a nota fiscal na empresa desejada
-	 */
-	private static void consultarNotas() {
-		try {
-		Empresa empresaSolicitada = pegarEmpresa();
-		String numeroNota = Console.recuperaTexto("Informe o número da nota: ");
-		ArrayList<NotaFiscal> notas = empresaSolicitada.getNotasFiscais();
-
-		for (NotaFiscal nota : notas) {
-			if (numeroNota.equalsIgnoreCase(nota.getNumero())) {
-				System.out.println(nota);
-			}
-		}
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
-		}
-
-	}
-
-	/**
-	 * Emite uma nota fiscal (Add no Arraylist notasFiscais do objeto empresa)
-	 */
-	private static void emitirNotas() {
-		try {
-		Empresa empresaSolicitada = pegarEmpresa();
-		empresaSolicitada.addNotaFiscal(criarNota());
-		System.out.println("Nota Emitida...\n");
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
-		}
 		
 	}
 
 	/**
-	 * Cria uma Nota Fiscal
+	 * Cancela a nota fiscal da empresa desejada.
+	 */
+	private static void cancelarNotas() {
+		try {
+			String cnpj = Console.recuperaTexto("Informe o CNPJ da empresa: ");
+			System.out.println(pegarEmpresa(cnpj).getNotasFiscais());
+			String numeroNota = Console.recuperaTexto("Informe o número da nota: ");
+			ArrayList<NotaFiscal> notas = pegarEmpresa(cnpj).getNotasFiscais();
+
+			for (NotaFiscal nota : notas) {
+				if (numeroNota.equalsIgnoreCase(nota.getNumero())) {
+					nota.setCancelada(true);
+					System.out.println("Nota cancelada...");
+				} else {
+					System.out.println("Nota não encontrada...");
+				}
+			}
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+	}
+
+	/**
+	 * Consulta a nota fiscal da empresa desejada.
+	 */
+	private static void consultarNotas() {
+		try {
+			String cnpj = Console.recuperaTexto("Informe o CNPJ da empresa: ");
+			Empresa empresaSolicitada = pegarEmpresa(cnpj);
+			String numeroNota = Console.recuperaTexto("Informe o número da nota: ");
+			ArrayList<NotaFiscal> notas = empresaSolicitada.getNotasFiscais();
+
+			for (NotaFiscal nota : notas) {
+				if (numeroNota.equalsIgnoreCase(nota.getNumero())) {
+					System.out.println(nota);
+				} else {
+					System.out.println("Nota não encontrada...");
+				}
+				
+			}
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+	}
+
+	/**
+	 * Emite uma nota fiscal (Add no Arraylist notasFiscais do objeto empresa).
+	 */
+	private static void emitirNotas() {
+		try {
+			String cnpj = Console.recuperaTexto("Informe o CNPJ da empresa: ");
+			Empresa empresaSolicitada = pegarEmpresa(cnpj);
+			empresaSolicitada.addNotaFiscal(criarNota());
+			System.out.println("Nota Emitida...\n");
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+	}
+
+	/**
+	 * Cria uma Nota Fiscal.
 	 * 
-	 * @return Nota Fiscal
+	 * @return Nota Fiscal.
 	 */
 	private static NotaFiscal criarNota() {
 
@@ -296,29 +293,29 @@ public class Principal {
 		NotaFiscal nota = new NotaFiscal(numero, descricao, imposto, valor);
 		return nota;
 	}
-	
+
 	/**
+	 * Encontra uma empresa pelo cnpj, e retorna a empresa.
 	 * 
-	 * @return
-	 * @throws Exception 
+	 * @return A empresa buscada.
+	 * @throws Exception
 	 */
-	public static Empresa pegarEmpresa() throws Exception {
-			String cnpj = Console.recuperaTexto("Informe o CNPJ da empresa: ");
-		if(encontrarIndexEmpresa(cnpj) == -1) {
-			throw new Exception("Index < 0 não existe...");
-		} else {		
-		return empresas.get(encontrarIndexEmpresa(cnpj));
+	public static Empresa pegarEmpresa(String cnpj) throws Exception {
+
+		if (encontrarIndexEmpresa(cnpj) == -1) {
+			throw new Exception("CNPJ não encontrado...");
+		} else {
+			return empresas.get(encontrarIndexEmpresa(cnpj));
 		}
 	}
 
 	/**
-	 * Localiza uma empresa no ArrayList empresas
+	 * Localiza uma empresa no ArrayList empresas, e retorna seu index.
 	 * 
-	 * @param cnpj parametro de busca
-	 * @return um inteiro com index do ArrayList empresas
+	 * @param cnpj Parâmetro de busca.
+	 * @return Um inteiro com o index da empresa buscada.
 	 */
 	private static int encontrarIndexEmpresa(String cnpj) {
-		
 
 		int i = -1;
 		for (Empresa empresa : empresas) {
@@ -331,7 +328,7 @@ public class Principal {
 	}
 
 	/**
-	 * Cria uma empresa
+	 * Cria uma empresa.
 	 */
 	private static void criarEmpresa() {
 
@@ -346,6 +343,5 @@ public class Principal {
 			System.out.println("Empresa adicionada!");
 			System.out.println();
 		}
-
 	}
 }
