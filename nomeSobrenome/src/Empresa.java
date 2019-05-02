@@ -44,11 +44,22 @@ public class Empresa {
 	public ArrayList<NotaFiscal> GetNotasFiscaisValidas(){
 		ArrayList<NotaFiscal> notasFiscaisValidas = new ArrayList<>();
 		
+		for (NotaFiscal nota : notasFiscais) {
+
+			if (nota.isCancelada() == false) {
+				notasFiscaisValidas.add(nota);
+			}
+		}
 		return  notasFiscaisValidas;
 	}
 	public ArrayList<NotaFiscal> GetNotasFiscaisCanceladas(){
 		ArrayList<NotaFiscal> notasFiscaisCanceladas = new ArrayList<>();
-		
+		for (NotaFiscal nota : notasFiscais) {
+
+			if (nota.isCancelada() == true) {
+				notasFiscaisCanceladas.add(nota);
+			}
+		}
 		return  notasFiscaisCanceladas;
 	}
 	

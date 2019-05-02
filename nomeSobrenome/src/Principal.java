@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Collections;
 
 /**
  * Classe principal da aplicação.
@@ -21,7 +22,7 @@ public class Principal {
 		do {
 			int opcao = Console.mostrarMenu(opcoes, "Sistema de Notas", null);
 			switch (opcao) {
-			
+
 			case 1:
 				menuEmpresa();
 				break;
@@ -38,7 +39,7 @@ public class Principal {
 				System.out.println("Saindo do Sistema...");
 				continua = false;
 				break;
-				
+
 			}
 		} while (continua);
 	}
@@ -53,7 +54,7 @@ public class Principal {
 		do {
 			int opcaoMenuEmpresas = Console.mostrarMenu(opcoesMenuEmpresas, "Empresas", "Voltar");
 			switch (opcaoMenuEmpresas) {
-			
+
 			case 1:
 				criarEmpresa();
 				break;
@@ -61,7 +62,7 @@ public class Principal {
 			case 2:
 				consultaDeEmpresas();
 				break;
-				
+
 			case 3:
 				excluirEmpresa();
 				break;
@@ -70,7 +71,7 @@ public class Principal {
 				System.out.println("Saindo do Sistema...");
 				continua = false;
 				break;
-				
+
 			}
 		} while (continua);
 	}
@@ -152,43 +153,64 @@ public class Principal {
 			case 1:
 				gerarRelatorioPorEmpresa();
 				break;
-				
+
 			case 2:
 				gerarRelatorioNotasCanceladas();
 				break;
-				
+
 			case 3:
 				gerarRelatorioPorValorDaNota();
 				break;
-				
+
 			case -1:
 				System.out.println("Voltando ao Menu Principal...");
 				continua = false;
 				break;
-				
+
 			}
 		} while (continua);
 	}
 
 	/**
-	 * 
+	 * Gera relatórios de notas ordenadas por valor. 
 	 */
 	private static void gerarRelatorioPorValorDaNota() {
-
+		String cnpj = Console.recuperaTexto("Informe o CNPJ da empresa: ");
+		try {
+			ArrayList<NotaFiscal> notas = new ArrayList<>();
+			notas = pegarEmpresa(cnpj).GetNotasFiscaisValidas();
+			Collections.sort(notas, new ComparaValorNota());	
+			System.out.println(notas);
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
 	}
 
 	/**
-	 * 
+	 * Gera relatórios de notas canceladas por empresa.
 	 */
 	private static void gerarRelatorioNotasCanceladas() {
+		String cnpj = Console.recuperaTexto("Informe o CNPJ da empresa: ");
+		try {
+			System.out.println(pegarEmpresa(cnpj).GetNotasFiscaisCanceladas());
 
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
 	}
 
 	/**
-	 * 
+	 * Gera relatórios de notas válidas por empresa.
 	 */
 	private static void gerarRelatorioPorEmpresa() {
-		
+
+		String cnpj = Console.recuperaTexto("Informe o CNPJ da empresa: ");
+		try {
+			System.out.println(pegarEmpresa(cnpj).GetNotasFiscaisValidas());
+
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
 	}
 
 	/**
@@ -230,7 +252,7 @@ public class Principal {
 				} else {
 					System.out.println("Nota não encontrada...");
 				}
-				
+
 			}
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
