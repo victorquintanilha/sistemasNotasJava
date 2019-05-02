@@ -54,7 +54,6 @@ public class Principal {
 
 		String[] opcoesMenuEmpresas = { "Cadastrar", "Consultar", "Excluir" };
 		boolean continua = true;
-		String buscaCNPJ;
 		int index = 0;
 		do {
 			int opcaoMenuEmpresas = Console.mostrarMenu(opcoesMenuEmpresas, "Empresas", "Voltar");
@@ -86,8 +85,8 @@ public class Principal {
 				break;
 			case 3: // Excluir
 
-				buscaCNPJ = Console.recuperaTexto("Informe o CNPJ: ");
-				index = encontrarIndexEmpresa();
+				String cnpj = Console.recuperaTexto("Informe o CNPJ: ");
+				index = encontrarIndexEmpresa(cnpj);
 
 				if (index >= 0) {
 					System.out.println();
@@ -204,7 +203,7 @@ public class Principal {
 	private static void cancelarNotas() {
 		try {
 		String cnpj = Console.recuperaTexto("Informe o CNPJ da empresa: ");
-		int index = encontrarIndexEmpresa();
+		int index = encontrarIndexEmpresa(cnpj);
 		Empresa empresa = pegarEmpresa();
 		System.out.println(empresas.get(index).getNotasFiscais());
 		String numeroNota = Console.recuperaTexto("Informe o número da nota: ");
@@ -304,11 +303,11 @@ public class Principal {
 	 * @throws Exception 
 	 */
 	public static Empresa pegarEmpresa() throws Exception {
-		
-		if(encontrarIndexEmpresa() == -1) {
+			String cnpj = Console.recuperaTexto("Informe o CNPJ da empresa: ");
+		if(encontrarIndexEmpresa(cnpj) == -1) {
 			throw new Exception("Index < 0 não existe...");
 		} else {		
-		return empresas.get(encontrarIndexEmpresa());
+		return empresas.get(encontrarIndexEmpresa(cnpj));
 		}
 	}
 
@@ -318,8 +317,9 @@ public class Principal {
 	 * @param cnpj parametro de busca
 	 * @return um inteiro com index do ArrayList empresas
 	 */
-	private static int encontrarIndexEmpresa() {
-		String cnpj = Console.recuperaTexto("Informe o CNPJ da empresa: ");
+	private static int encontrarIndexEmpresa(String cnpj) {
+		
+
 		int i = -1;
 		for (Empresa empresa : empresas) {
 			i++;
@@ -338,7 +338,7 @@ public class Principal {
 		String nome = Console.recuperaTexto("Digite o nome da empresa");
 		String cnpj = Console.recuperaTexto("Digite o CNPJ da empresa");
 
-		int index = encontrarIndexEmpresa();
+		int index = encontrarIndexEmpresa(cnpj);
 
 		if (index == -1) {
 			Empresa empresa = new Empresa(nome, cnpj);
