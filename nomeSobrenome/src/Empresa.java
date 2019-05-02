@@ -44,14 +44,10 @@ public class Empresa {
 	public ArrayList<NotaFiscal> GetNotasFiscaisValidas(){
 		ArrayList notasFiscaisValidas = new ArrayList<>();
 		
-		
-		
 		return  notasFiscaisValidas;
 	}
 	public ArrayList<NotaFiscal> GetNotasFiscaisCanceladas(){
 		ArrayList notasFiscaisCanceladas = new ArrayList<>();
-		
-		
 		
 		return  notasFiscaisCanceladas;
 	}
